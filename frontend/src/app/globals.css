@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* FOUR brand tokens. Colours sampled from FOUR's own artwork (research/scraped-data.md). */
+@theme {
+  --color-red: #c8141a; /* campaign post red, brightened to be the one site-wide red */
+  --color-red-hot: #e0262b; /* hover / highlight */
+  --color-red-deep: #8c0f14;
+  --color-maroon: #5a0a0f; /* background wordmarks: dark enough to read against red */
+  --color-maroon-deep: #33050a;
+  --color-cream: #f0e4ce; /* logo letters */
+  --color-cream-warm: #fcf4df; /* post backgrounds */
+  --color-paper: #fdfaee;
+  --color-gold: #e8a93a; /* hand-lettered underline swash */
+  --color-ink: #1c0d0e;
+  --color-char: #120a0a; /* dark food-theatre sections */
+  --color-char-2: #1d1312;
+
+  --font-display: var(--font-spartan), "Arial Black", sans-serif;
+  --font-script: var(--font-chewy), cursive;
+  --font-sans: var(--font-dm), system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-red);
+  color: var(--color-cream);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+@utility script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
+/* FOUR's wrap paper: red wordmark repeated on white. Used as a quiet texture. */
+@utility wrap-paper {
+  background-color: var(--color-paper);
+  background-image: radial-gradient(color-mix(in oklab, var(--color-red) 14%, transparent) 1.2px, transparent 1.3px);
+  background-size: 18px 18px;
+}
+
+/* The black-and-white key floor from the restaurant (GM photos). */
+@utility key-floor {
+  background-color: #f4efe6;
+  background-image:
+    linear-gradient(90deg, #111 0 12.5%, transparent 12.5% 37.5%, #111 37.5% 50%, transparent 50%),
+    linear-gradient(#111 0 12.5%, transparent 12.5% 37.5%, #111 37.5% 50%, transparent 50%);
+  background-size: 32px 32px;
+}
+
+/* Dots that gather round a plate and fade out. Colour comes from text-*; pair with
+   bg-fixed on both this and a wrap-paper section so the two grids line up exactly. */
+@utility dot-halo {
+  background-image: radial-gradient(currentColor 1.6px, transparent 1.7px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(closest-side, black 30%, transparent);
+}
+
+@utility grain {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-y {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+/* Hero void: rings rush out of the dark centre towards the viewer. */
+@keyframes tunnel {
+  from {
+    transform: scale(0.05);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Specks streaming out of the void. --a sets the angle, --r the distance. */
+@keyframes warp {
+  from {
+    transform: rotate(var(--a)) translateX(0) scale(0.3);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  to {
+    transform: rotate(var(--a)) translateX(var(--r)) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes float-y {
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
